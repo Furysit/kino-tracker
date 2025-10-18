@@ -1,0 +1,9 @@
+ilya-smolenskiy-kino-tracker.ru {
+    encode gzip
+    root * /srv/frontend
+    file_server
+
+    handle /api/* {
+        reverse_proxy kino_backend:5000
+    }
+}

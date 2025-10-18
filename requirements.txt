@@ -1,8 +1,0 @@
-
-Flask
-Flask-Login
-Flask-Migrate
-Flask-SQLAlchemy
-psycopg2
-SQLAlchemy
-

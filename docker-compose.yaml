@@ -1,0 +1,41 @@
+version: '3.9'
+
+services:
+  backend:
+    container_name: kino_backend
+    build:
+      context: ./backend
+      dockerfile: Dockerfile
+    restart: always
+    environment:
+      - MONGO_URI=mongodb://db:27017/testdb
+    expose:
+      - "5000"
+
+  caddy:
+    container_name: kino_caddy
+    build:
+      context: ./frontend/kinotracker_front
+      dockerfile: Dockerfile
+    restart: always
+    ports:
+      - "80:80"
+      - "443:443"
+    volumes:
+      - ./Caddyfile:/etc/caddy/Caddyfile
+      - caddy_data:/data
+      - caddy_config:/config
+    depends_on:
+      - backend
+
+  db:
+    container_name: kino_db
+    image: mongodb/mongodb-community-server:latest
+    restart: always
+    volumes:
+      - db-data:/data/db
+
+volumes:
+  db-data:
+  caddy_data:
+  caddy_config:

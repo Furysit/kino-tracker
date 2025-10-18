@@ -1,0 +1,5 @@
+{
+    "exp_min": 20,
+    "secret": "SeCret",
+    "algorithm": "HS256"
+}

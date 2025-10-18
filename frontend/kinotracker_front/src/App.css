@@ -1,0 +1,47 @@
+@import "tailwindcss";
+
+.custom-movie-button {
+  background: linear-gradient(135deg, #e4b86c, #d97706) !important;
+  border-color: #f59e0b !important;
+  color: #1e293b !important;
+  font-weight: 600 !important;
+  height: 40px !important;
+  padding: 0 20px !important;
+  border-radius: 8px !important;
+}
+
+.custom-movie-button:hover {
+  background: linear-gradient(135deg, #d97706, #b45309) !important;
+  border-color: #d97706 !important;
+  transform: translateY(-1px) !important;
+  box-shadow: 0 4px 12px rgba(245, 158, 11, 0.3) !important;
+}
+
+.custom-movie-button:active {
+  transform: translateY(0) !important;
+}
+
+.view-toggle-container {
+  background: rgba(30, 41, 59, 0.8);
+  backdrop-filter: blur(8px);
+  border: 1px solid #475569;
+  border-radius: 12px;
+  padding: 4px;
+}
+
+.view-toggle-button .ant-btn.view-toggle-button{
+  transition: all 0.2s ease !important;
+  color: #cbd5e1 !important;
+  border: 1px solid #475569 !important;
+}
+
+.view-toggle-button.active .ant-btn.view-toggle-button.active {
+  background: #e4b86c !important;
+  color: #1e293b !important;
+  border-color: #e4b86c !important;
+  font-weight: 600 !important;
+}
+
+.view-toggle-button:not(.active):hover .ant-btn.view-toggle-button:not(.active):hover {
+  background: #475569 !important;
+}
