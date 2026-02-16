@@ -22,9 +22,9 @@ def serialize_title(doc):
 @movies_bp.route("/movies")
 def get_movies():
     page = int(request.args.get("page", 1))
-    per_page = int(request.args.get("per_page", 8))
+    per_page = int(request.args.get("per_page", 10))
     skip = (page-1) * per_page
-
+    
     cursor = titles_collection.find().sort("watchedDate", -1).skip(skip).limit(per_page)
     titles = [serialize_title(doc) for doc in cursor]
 
@@ -36,6 +36,49 @@ def get_movies():
         "total_pages": total_pages,
         "total": total
     })
+
+
+@token_required
+@movies_bp.route("/search_movie", methods=["GET"])
+def search():
+    page = int(request.args.get("page", 1))
+    per_page = int(request.args.get("per_page", 10))
+    skip = (page-1) * per_page
+    query = request.args.get("query", "").strip()
+
+    try:
+        filters = []
+        if query:
+            filters.append({"title": {"$regex": query, "$options": "i"}})
+            filters.append({"genre": {"$regex": query, "$options": "i"}})
+
+            if query.isdigit():
+                filters.append({"year": int(query)})
+                filters.append({"runtime": int(query)})
+
+            from datetime import datetime
+            try:
+                date = datetime.strptime(query, "%Y-%m-%d").strftime("%Y-%m-%d")
+                filters.append({"watchedDate": date})
+            except ValueError:
+                pass
+
+        search_filter = {"$or": filters} if filters else {}
+
+        cursor = titles_collection.find(search_filter).sort("watchedDate", -1).skip(skip).limit(per_page)
+        titles = [serialize_title(doc) for doc in cursor]
+
+        total_search = titles_collection.count_documents(search_filter)
+        total_pages = (total_search + per_page - 1) // per_page
+
+        return jsonify({
+            "movies": titles,
+            "page": page,
+            "total_pages": total_pages,
+            "total": total_search
+        })
+    except Exception as e:
+        return jsonify({"error": str(e)}), 500
 
 @token_required
 @movies_bp.route("/addMovie", methods = ["POST"])

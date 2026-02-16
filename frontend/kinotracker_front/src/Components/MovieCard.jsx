@@ -3,7 +3,7 @@ import { X } from "lucide-react";
 import { FaRegCalendarCheck } from "react-icons/fa";
 import { useState } from "react";
 
-export function MovieCard({ movie, viewMode, onDelete }){
+export function MovieCard({ movie, viewMode, onDelete, className }){
     const [showDelete, setShowDelete] = useState(false)
     
     const handleCardClick = () => {
@@ -21,7 +21,7 @@ export function MovieCard({ movie, viewMode, onDelete }){
     "group relative bg-gray-950/40 backdrop-blur-sm border border-slate-600/50 rounded-xl shadow-2xl overflow-hidden transition-all duration-300 hover:border-slate-500/70 hover:shadow-slate-500/20 mb-4 cursor-pointer";
 
   return (
-    <div onClick={handleCardClick} className={`${baseClasses} relative overflow-visible`}>
+    <div onClick={handleCardClick} className={`${baseClasses} relative overflow-visible ${className}`}>
       {/* DELETE BUTTON */}
       <button
         onClick={handleDeleteClick}

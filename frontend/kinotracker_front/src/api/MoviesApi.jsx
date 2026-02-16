@@ -1,7 +1,8 @@
-const BASE_URL = "/api"
+const BASE_URL = import.meta.env.VITE_BASE_URL;
 
-export async function fetchMovies(token) {
-    const response = await fetch(`${BASE_URL}/movies`,{
+export async function fetchMovies(currentPage,token, debouncedInput) {
+  if(!debouncedInput){
+    const response = await fetch(`${BASE_URL}/movies?page=${currentPage}&per_page=10`,{
         headers:{
             "Content-Type": "application/json",
             ...(token ? {Authorization : `Bearer ${token}`} : {})
@@ -9,7 +10,19 @@ export async function fetchMovies(token) {
     });
     if (!response.ok) throw new Error("Network error");
     return await response.json();
+  }
+    
+}
 
+export async function searchMovies(currentPage, token, query) {
+  const response = await fetch(`${BASE_URL}/search_movie?query=${encodeURIComponent(query)}&page=${currentPage}&per_page=10`, {
+    headers: {
+      "Content-Type": "application/json",
+      ...(token ? { Authorization: `Bearer ${token}` } : {})
+    }
+  });
+  if (!response.ok) throw new Error("Network error");
+  return await response.json();
 }
 
 export async function addMovie(movie, token) {

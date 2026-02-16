@@ -1,7 +1,7 @@
 import { useState} from "react";
 import '../reset.css'
 
-const BASE_URL = "/api"
+const BASE_URL = import.meta.env.VITE_BASE_URL;
 
 export default function Login({ onLogin }) { 
   const [login, setLogin] = useState("");
